@@ -61,7 +61,7 @@ const exposeInstances = () => {
   expose.pool = node.pool;
   expose.netpool = node.pool; // alias
 
-  expose.miner = node.mempool;
+  expose.miner = node.miner;
 
   expose.walletdb = node.plugins.walletdb;
 

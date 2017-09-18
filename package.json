@@ -1,6 +1,6 @@
 {
   "name": "bcoin-repl",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Bcoin REPL",
   "main": "lib/bcoin.js",
   "scripts": {
@@ -21,7 +21,9 @@
     "url": "https://github.com/nodar-chkuaselidze/bcoin-repl/issues"
   },
   "bin": {
-    "bcoin-repl": "./bin/bcoin-repl"
+    "bcoin-repl": "./bin/bcoin-repl",
+    "bcoin-repl-node": "./bin/bcoin-repl-node",
+    "bcoin-repl-spvnode": "./bin/bcoin-repl-spvnode"
   },
   "homepage": "https://github.com/nodar-chkuaselidze/bcoin-repl#readme",
   "dependencies": {
