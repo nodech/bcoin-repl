@@ -1,0 +1,25 @@
+#!/usr/bin/env node
+
+'use strict';
+
+const repl = require('repl');
+const bcoin = require('bcoin');
+
+const keys = Object.keys(bcoin);
+const libs = Object.getOwnPropertyNames(bcoin)
+  .filter(name => keys.indexOf(name) < 0);
+
+const r = repl.start('bcoin > ');
+const define = (name, value) => {
+  Object.defineProperty(r.context, name, {
+    configurable: false,
+    enumerable: true,
+    value: value
+  });
+};
+
+libs.forEach((lib) => {
+  define(lib, bcoin[lib]);
+});
+
+define('bcoin', bcoin);
