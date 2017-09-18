@@ -2,15 +2,12 @@
 
 'use strict';
 
-const repl = require('repl');
+const common = require('../lib/common');
 const lib = require('..');
-const helpers = require('../lib/helpers');
 
-const r = repl.start('bcoin > ');
-const define = helpers.defineContext(r.context);
+lib.bcoin = lib;
 
-Object.keys(lib).forEach((name) => {
-  define(name, lib[name]);
+common.setupRepl({
+  name: 'bcoin',
+  expose: lib
 });
-
-define('bcoin', lib);

@@ -1,0 +1,86 @@
+#!/usr/bin/env node
+
+'use strict';
+
+process.title = 'bcoin-repl-node';
+
+if (process.argv.indexOf('--help') !== -1
+    || process.argv.indexOf('-h') !== -1) {
+  console.error('See the bcoin wiki at: https://github.com/bcoin-org/bcoin/wiki.');
+  process.exit(1);
+  throw new Error('Could not exit.');
+}
+
+if (process.argv.indexOf('--version') !== -1
+    || process.argv.indexOf('-v') !== -1) {
+  const pkg = require('../package.json');
+  console.log(pkg.version);
+  process.exit(0);
+  throw new Error('Could not exit.');
+}
+
+const common = require('../lib/common');
+const bcoin = require('..');
+
+const node = new bcoin.FullNode({
+  config: true,
+  argv: true,
+  env: true,
+  logFile: true,
+  logConsole: true,
+  logLevel: 'debug',
+  db: 'leveldb',
+  persistent: true,
+  workers: true,
+  listen: true,
+  loader: require
+});
+
+// Temporary hack
+if (!node.config.bool('no-wallet') && !node.has('walletdb')) {
+  const plugin = bcoin.wallet.plugin;
+  node.use(plugin);
+}
+
+process.on('unhandledRejection', (err, promise) => {
+  throw err;
+});
+
+const exposeInstances = () => {
+  const expose = {};
+
+  expose.bcoin = bcoin; // expose bcoin as a library.
+  expose.node = node;
+  expose.config = node.config;
+  expose.logger = node.logger;
+  expose.network = node.network;
+
+  expose.chain = node.chain;
+  expose.mempool = node.mempool;
+
+  expose.pool = node.pool;
+  expose.netpool = node.pool; // alias
+
+  expose.miner = node.mempool;
+
+  expose.walletdb = node.plugins.walletdb;
+
+  return expose;
+};
+
+(async () => {
+  await node.ensure();
+  await node.open();
+  await node.connect();
+  node.startSync();
+
+  const r = common.setupRepl({
+    name: 'bcoin-node',
+    expose: exposeInstances()
+  });
+
+  r.on('exit', () => node.close());
+})().catch((err) => {
+  console.error(err.stack);
+  process.exit(1);
+});
