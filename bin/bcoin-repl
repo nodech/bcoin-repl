@@ -3,23 +3,14 @@
 'use strict';
 
 const repl = require('repl');
-const bcoin = require('bcoin');
-
-const keys = Object.keys(bcoin);
-const libs = Object.getOwnPropertyNames(bcoin)
-  .filter(name => keys.indexOf(name) < 0);
+const lib = require('..');
+const helpers = require('../lib/helpers');
 
 const r = repl.start('bcoin > ');
-const define = (name, value) => {
-  Object.defineProperty(r.context, name, {
-    configurable: false,
-    enumerable: true,
-    value: value
-  });
-};
+const define = helpers.defineContext(r.context);
 
-libs.forEach((lib) => {
-  define(lib, bcoin[lib]);
+Object.keys(lib).forEach((name) => {
+  define(name, lib[name]);
 });
 
-define('bcoin', bcoin);
+define('bcoin', lib);
