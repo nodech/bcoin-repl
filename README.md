@@ -13,6 +13,9 @@ $ npm i -g bcoin-repl
 
 There are three tools in the package: `bcoin-repl`, `bcoin-repl-node` and `bcoin-repl-spvnode`.
 
+:biohazard: 
+**`bcoin-repl-node` and `bcoin-repl-spvnode` will give you access to running node, make sure you know what you're doing.** :biohazard: 
+
 ## bcoin-repl
 Bcoin REPL will only expose the bcoin library (with node repl's autocompletion), so you can use it as a bitcoin tool. All libraries(tools) exposed by bcoin are loaded into REPL context so you can easily access them. Also you could use `bcoin` variable which contains all libraries.
 
