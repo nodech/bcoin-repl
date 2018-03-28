@@ -28,8 +28,8 @@ const node = new bcoin.FullNode({
   env: true,
   logFile: true,
   logConsole: true,
-  logLevel: 'debug',
-  db: 'leveldb',
+  logLevel: 'none',
+  memory: false,
   persistent: true,
   workers: true,
   listen: true,
@@ -38,7 +38,7 @@ const node = new bcoin.FullNode({
 
 // Temporary hack
 if (!node.config.bool('no-wallet') && !node.has('walletdb')) {
-  const plugin = bcoin.wallet.plugin;
+  const plugin = require('bcoin/lib/wallet/plugin');
   node.use(plugin);
 }
 
@@ -72,7 +72,8 @@ const exposeInstances = () => {
   await node.ensure();
   await node.open();
   await node.connect();
-  node.startSync();
+  console.log('Syncing is stopped.');
+  console.log('Logger is silent.');
 
   const r = common.setupRepl({
     name: 'bcoin-node',
