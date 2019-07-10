@@ -27,6 +27,6 @@
   },
   "homepage": "https://github.com/nodar-chkuaselidze/bcoin-repl#readme",
   "dependencies": {
-    "bcoin": "git+https://github.com/bcoin-org/bcoin.git#wallet-rewrite"
+    "bcoin": "git+https://github.com/bcoin-org/bcoin.git#master"
   }
 }
